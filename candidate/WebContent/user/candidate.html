@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-5">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes">
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-touch-fullscreen" content="yes">
+
+<title>Candidate</title>
+
+<link rel="stylesheet" href="../../../components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/mystyle.css">
+
+</head>
+<body >
+        
+        <div  id="logo">
+           <img src="img/SAPLogo3.png" width="200px" height="100px">
+        </div>
+        <div id="content">
+
+            <div  id="brandId">
+                <div id="msg" class="success-msg alert alert-success">You applied successfully!</div>
+                <span> Internship program</span>
+            </div>
+
+    		<div id= "contId" class="container" ng-app ng-controller="CandidateController">
+            
+            <form class="form-horizontal custom-font formCenter" role="form">
+ 
+                  <div id="formNameId" class="form-group">
+                    <label id="lbl1" for="inputNameId" class="col-sm-3 control-label">*Name</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control custom-font" id="inputNameId"  maxlength="30" ng-model="candidate.firstname">
+                    </div>
+                  </div>
+                  
+                  
+                  <div id="formSurnameId" class="form-group">
+                    <label id="lbl2" for="inputSurnameId" class="col-sm-3 control-label ">Surname</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control custom-font" id="inputSurnameId"  maxlength="30" ng-model="candidate.lastname">
+                    </div>
+                  </div>
+                    
+                   <div id="formEmailId" class="form-group has-feedback">
+                    <label id="lbl3" for="inputEmailId" class="col-sm-3 control-label">*Email</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control custom-font" id="inputEmailId"  maxlength="45" ng-model="candidate.email" ng-change="validateEmail(candidate.email)">
+                       <span id="error"></span>
+                    </div>
+                  </div>
+                  
+                  <div id="formUniId" class="form-group">
+                    <label id="lbl4" for="inputUniId" class="col-sm-3 control-label">University</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control custom-font" id="inputUniId"  maxlength="45" ng-model="candidate.university">
+                    </div>
+                  </div>
+                  
+                   <div id="formMajorId" class="form-group">
+                    <label id="lbl7" for="formMajorId" class="col-sm-3 control-label">Faculty</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control custom-font" id="inputUniId"  maxlength="45" ng-model="candidate.major">
+                    </div>
+                  </div>
+                  
+                  <div id="formCourseId" class="form-group">
+                    <label id="lbl5" for="inputCourseId" class="col-sm-3 control-label">Course</label>
+                    <div class="col-sm-9">
+                       <select class="form-control custom-font" id="inputCourseId" ng-model="course" ng-options="c for c in courses"></select>
+                    </div>
+                  </div>
+            
+                    <div id="formOtherId" class="form-group">
+    					<label id="lbl6" for="inputOtherId" class="col-sm-3 control-label">Other</label>
+                        <div class="col-sm-9">
+    					    <textarea id="inputOtherId" class="form-control custom-font" rows="6" cols="50" maxlength="100" ng-model="candidate.other"></textarea>
+                       </div>
+                  </div>
+                  
+                   <div id="btnRow">
+                           <div id="formOtherId" class="form-group">
+                				<label id="lbl6" for="inputOtherId" class="col-sm-3 control-label"></label>
+                                <div class="col-sm-9">
+            					     <button 
+                                        type="button" id="btn-apply"
+                                        ng-class="{'btn btn-primary':candidate.firstname && candidate.email && validEmail,'btn btn-default':!candidate.firstname || !candidate.email || !validEmail}" 
+                                        ng-disabled="!candidate.firstname || !candidate.email || !validEmail" 
+                                        ng-click="newCandidate(candidate, course)">Apply
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        id="btn-cancel" 
+                                        class="btn btn-danger"
+                                        ng-click="canscelAuction()">Cancel
+                                    </button>
+                               </div>
+                          </div>
+                    </div>
+                </form>
+    	</div>
+     </div>
+    <iframe id="ping-iframe" style="width: 0px; height: 0px; visibility:hidden;"></iframe>
+    <script 
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js">
+    </script>
+     
+	<script type="text/javascript">
+		function CandidateController($scope, $http) {
+			
+            setInterval(function() {
+                document.getElementById("ping-iframe").src = "pong.html";
+            }, 30000);
+    
+			var url = '/dirigible/js-secured/DCANDIDATE/user/user_service_dcandidate.js';
+            
+            $scope.candidate = null;
+            $scope.errorMessage = null;
+            $scope.validEmail = false;
+             
+            $scope.courses = [
+                1, 2, 3, 4, 5
+            ];
+            
+            $scope.course = $scope.courses[0]; 
+    
+                    
+			function refreshData(){
+				$http.get(url)
+				.success(function(data){
+					$scope.data = data;
+				})
+			}
+            
+             $scope.newCandidate = function(candidate, course){
+                candidate.course = course;
+                
+				$http.post(url, candidate)
+				.success(function(){
+                    displaySuccessPopUp(3000);
+                    $scope.candidate = null;
+                    $scope.course = $scope.courses[0];
+                    var el = document.getElementById('error');
+                    removeClass(el);
+				})
+				.error(function(response){
+                    $scope.errorMessage = response.errorMessage;
+                    alert("error: " +response.errorMessage);
+				});
+			}
+            
+            $scope.canscelAuction = function(){
+                $scope.candidate = null;
+                $scope.course = $scope.courses[0];
+                var el = document.getElementById('error');
+                removeClass(el);
+			}
+            
+            function displaySuccessPopUp(duration) {
+                var el = document.getElementById('msg');
+                el.setAttribute("style","display: block;");
+                setTimeout(function(){
+                    el.setAttribute("style","display: none;");
+                },duration);
+            }
+            
+            $scope.validateEmail = function(email) {
+                var el = document.getElementById('error');
+                if(email !== ""){
+                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    if(!re.test(email)){
+                        $scope.validEmail = false;
+                        el.setAttribute("class","glyphicon glyphicon-remove form-control-feedback");
+                    } else {
+                        $scope.validEmail = true;
+                        el.setAttribute("class","glyphicon glyphicon-ok form-control-feedback");
+                    };
+                } else {
+                     $scope.validEmail = false;
+                     removeClass(el);
+                }
+            }
+            
+            function removeClass(el){
+                 if(el.className == "glyphicon glyphicon-remove form-control-feedback"){
+                        el.className=el.className.replace("glyphicon glyphicon-remove form-control-feedback", "");
+                    } else {
+                        el.className=el.className.replace("glyphicon glyphicon-ok form-control-feedback", "");
+                    }
+            }
+		}
+	</script>
+</body>
+</html>

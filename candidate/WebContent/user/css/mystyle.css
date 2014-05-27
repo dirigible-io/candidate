@@ -1,0 +1,101 @@
+body
+{
+background: url("../img/bg-final3.jpg") no-repeat fixed;
+background-size: 100% auto; 
+
+}
+.custom-font
+{
+font-size : 18px
+}
+
+#content
+{
+}
+
+#logo
+{
+padding-top: 50px;
+padding-left: 50px;
+}
+
+#contId
+{
+width: 550px;
+}
+
+.formCenter
+{
+padding-right: 100px;
+}
+
+#btnRow
+{
+text-align: center;
+}
+
+#btnRow button {
+padding: 10px 35px;
+font-size: x-large;
+}
+
+#brandId
+{
+color:white;
+text-shadow: 0px 2px 3px #555;
+font-size: 4em;
+text-align:center;
+padding: 50px;
+}
+
+
+#lbl1, #lbl2, #lbl3, #lbl4, #lbl5, #lbl6, #lbl7
+{
+color:white;
+text-shadow: 0px 2px 3px #555;
+}
+
+
+#formNameId
+{
+}
+
+#formSurnameId
+{
+}
+
+#formEmailId
+{
+}
+
+#formUniId
+{
+}
+
+#formCourseId
+{
+}
+
+#formOtherId
+{
+}
+
+.btn-primary {
+color: #fff;
+background-color: #428bca;
+border-color: #357ebd;
+}
+
+#btn-apply {
+    float: left;
+}
+
+#btn-cancel {
+    float: right;
+    background-color: #cc1919;
+}
+
+.success-msg
+{
+ display: none;
+}

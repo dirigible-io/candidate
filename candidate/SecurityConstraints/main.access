@@ -1,0 +1,17 @@
+[
+  {
+    "location":"/DCANDIDATE/user",
+    "roles":
+      [
+        {"role":"Administrator"}
+      ]
+  },
+  {
+    "location":"/DCANDIDATE/admin",
+    "roles":
+      [
+        {"role":"Administrator"}
+      ]
+  }
+]
+
